@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Sentinel</string>
+
+    <string name="enable_location_setting">Enable location settings</string>
+    <string name="enable_bluetooth">Please enable bluetooth</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="device_disconnected">Device disconnected</string>
+</resources>
