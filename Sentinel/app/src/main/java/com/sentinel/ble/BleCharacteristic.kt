@@ -11,25 +11,26 @@ import java.io.IOException
 import java.util.Arrays
 import java.util.UUID
 
-import com.sentinel.R
-import com.sentinel.activity.MainActivity
 import com.sentinel.ble.BleDeviceActor.Companion.bleWriteCharacteristic
 import com.sentinel.util.AppConstant
 import com.sentinel.util.CheckSelfPermission
+import java.util.zip.CRC32
 
 object BleCharacteristic {
     var MAX_TRANS_COUNT = 20
 
-  /*  fun writeDataToDevice(context: Context, randomData: ByteArray) {
-        var randomData = randomData
-        Log.d("ble==> ", "chalangeDATA hax: " + AppConstant.byteArrayToHexString(randomData))
-        randomData = removefirstvaluefromByte(randomData)
-        //        Log.d("ble==> ", "chalangeDATA new hax: " + AppConstant.byteArrayToHexString(randomData));
-        val encryptedChalangeData = encryptData(randomData, context)
-        Log.d("ble==> ", "chalangeDATA encypted hax: " + AppConstant.byteArrayToHexString(encryptedChalangeData))
-        //        Log.d("ble==> ", "chalangeDATA encypted: " + Arrays.toString(encryptedChalangeData));
-        val binArray = sendPacket(context, encryptedChalangeData)
-        Log.d("ble==> ", "bytePacketForSend: " + AppConstant.byteArrayToHexString(binArray))
+    fun writeDataToDevice(context: Context, command:ByteArray, address:ByteArray) {
+        val to_send = ByteArrayOutputStream()
+        try {
+            to_send.write(command)
+            to_send.write(address)
+            to_send.write(calculateCRC32(to_send.toByteArray()))
+            to_send.write(0x0a)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        val binArray = to_send.toByteArray()
 
         if (binArray == null || binArray.size == 0) {
             return
@@ -60,8 +61,28 @@ object BleCharacteristic {
         }
     }
 
+    fun calculateCRC32(data:ByteArray): ByteArray? {
+       /* val to_send = ByteArrayOutputStream()
+        try {
+            to_send.write(command)
+            to_send.write(address)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
 
-    fun sendPacket(context: Context, chalangedataencrpted: ByteArray): ByteArray? {
+        val data = to_send.toByteArray()*/
+        Log.d("ble==> ", "CRC32 for: " +Arrays.toString(data))
+        val crc = CRC32()
+        crc.update(data)
+        val enc = String.format("%08X", crc.value)
+        Log.d("ble==> ", "CRC32: " +enc)
+        val binArray = AppConstant.hexStringToByteArray(enc)
+        Log.d("ble==> ", "CRC32: " +Arrays.toString(binArray.reversedArray()))
+        return binArray.reversedArray()
+    }
+
+
+/*    fun sendPacket(context: Context, chalangedataencrpted: ByteArray): ByteArray? {
         val mBluetoothGatt = BleDeviceActor.getmBluetoothGatt()
         if (canReadWrite(context, mBluetoothGatt)) {
             val deviceID = SharedPref.getValue(context, SharedPref.PREF_DEVICE_ID, "")
@@ -83,11 +104,11 @@ object BleCharacteristic {
             context.sendBroadcast(intent)
             return null
         }
-    }
+    }*/
 
     fun removefirstvaluefromByte(chalangeData: ByteArray): ByteArray {
         return Arrays.copyOfRange(chalangeData, 1, chalangeData.size)
-    }*/
+    }
 
     fun enableNotifyChar(context: Context) {
         val mBluetoothGatt = BleDeviceActor.getmBluetoothGatt()
@@ -108,10 +129,10 @@ object BleCharacteristic {
 
     fun canReadWrite(context: Context, mBluetoothGatt: BluetoothGatt?): Boolean {
         if (!CheckSelfPermission.isBluetoothOn(context)) {
-            Toast.makeText(context, context.getString(R.string.enable_bluetooth), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(com.sentinel.R.string.enable_bluetooth), Toast.LENGTH_SHORT).show()
             return false
         } else if (!BleDeviceActor.isIsConnected) {
-            Toast.makeText(context, context.getString(R.string.device_disconnected), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(com.sentinel.R.string.device_disconnected), Toast.LENGTH_SHORT).show()
             return false
         } else return if (mBluetoothGatt == null) {
             false

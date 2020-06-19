@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.sentinel.R
+import com.sentinel.ble.BleCharacteristic
 
 import java.util.*
 import com.sentinel.ble.BleDeviceActor
@@ -42,7 +43,7 @@ class RequestAccessActivity : AppCompatActivity(), View.OnClickListener {
                     if (!isConnecting) {
                         isConnecting = true
                         val bleDeviceActor = BleDeviceActor(this@RequestAccessActivity)
-                        bleDeviceActor.connectToDevice(scannedDevice,this@RequestAccessActivity)
+                        bleDeviceActor.connectToDevice(scannedDevice, this@RequestAccessActivity)
                     }
                 }
             }
@@ -102,6 +103,9 @@ class RequestAccessActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.tv_text -> {
+                val command = byteArrayOf(0x00)
+                val address = byteArrayOf(0x00, 0x50, 0x00)
+                BleCharacteristic.writeDataToDevice(this, command, address)
             }
         }
     }

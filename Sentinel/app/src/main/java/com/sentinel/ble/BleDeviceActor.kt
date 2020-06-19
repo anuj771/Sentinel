@@ -199,7 +199,7 @@ class BleDeviceActor(mContext: Context) : Runnable {
                 characteristic.value = byteValue
                 val isWrite = mBluetoothGatt.writeCharacteristic(characteristic)
 //                BleDeviceActor.WaitForSync()
-                Log.d("ble==>", "write characteristic: " + isWrite + " " + Arrays.toString(byteValue))
+                Log.d("ble==>", "write characteristic: " + isWrite + " " + Arrays.toString(byteValue)+" hex: "+AppConstant.byteArrytoHex(byteValue))
                 broadcastUpdate(AppConstant.ACTION_CHARACTERISTIC_WRITE, byteValue)
             } else {
                 Log.d("ble==>", "characteristic null")

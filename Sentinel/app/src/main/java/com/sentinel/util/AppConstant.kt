@@ -46,7 +46,7 @@ object AppConstant {
     fun byteArrytoHex(byteArry:ByteArray) : String{
         val result = StringBuffer()
 
-        for (i in 0 until byteArry.size step 2) {
+        for (i in 0 until byteArry.size step 1) {
             val octet = byteArry[i].toInt()
             val firstIndex = (octet and 0xF0).ushr(4)
             val secondIndex = octet and 0x0F
