@@ -2,7 +2,6 @@ package com.sentinel.ble
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattDescriptor
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 
