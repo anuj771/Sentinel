@@ -159,7 +159,6 @@ class ScanActivity : AppCompatActivity() {
                     intent1.putExtra("device_name", devicename)
                     intent1.putExtra("mac_address", macAddress)
                     context.startActivity(intent1)
-                    finish()
                 }
 
                 AppConstant.ACTION_DEVICE_DISCONNECTED -> {
@@ -190,13 +189,12 @@ class ScanActivity : AppCompatActivity() {
 
     private fun hideProgressDialog() {
         try {
-            if (pDialog!!.isShowing) {
+            if (pDialog!=null && pDialog!!.isShowing) {
                 pDialog!!.dismiss()
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
     }
 
  /*    private var timer: Timer? = null
