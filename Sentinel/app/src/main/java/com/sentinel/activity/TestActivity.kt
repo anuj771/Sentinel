@@ -16,6 +16,7 @@ import com.sentinel.util.AppConstant
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_request_access.*
 import kotlinx.android.synthetic.main.activity_test.*
+import kotlinx.android.synthetic.main.activity_test.view.*
 import kotlinx.android.synthetic.main.layout_header.*
 import java.util.*
 
@@ -73,7 +74,12 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                 if(address.equals("")){
                     Toast.makeText(this, resources.getString(R.string.enter_address_read), Toast.LENGTH_SHORT).show()
                 }else{
-                    BleCharacteristic.writeDataToDevice(this, 0, address, "")
+                    if(address.length%2 == 0) {
+                        tv_read.alpha = 0.5f
+                        BleCharacteristic.writeDataToDevice(this, 0, address, "")
+                    }else{
+                        Toast.makeText(this, resources.getString(R.string.enter_valid_data), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
 
@@ -85,7 +91,12 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                 }else if(data.equals("")){
                     Toast.makeText(this, resources.getString(R.string.enter_address_write), Toast.LENGTH_SHORT).show()
                 }else{
-                    BleCharacteristic.writeDataToDevice(this, 1, address, data)
+                    if(address.length%2 == 0 && data.length%2 == 0) {
+                        tv_write.alpha = 0.5f
+                        BleCharacteristic.writeDataToDevice(this, 1, address, data)
+                    }else{
+                        Toast.makeText(this, resources.getString(R.string.enter_valid_data), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -102,6 +113,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 AppConstant.ACTION_CHARACTERISTIC_CHANGED -> {
+                    tv_read.alpha = 1f
                     var data:ByteArray = intent.getByteArrayExtra("data")
                     if ((intent.getByteArrayExtra("data")[0]).toInt()==0 && data.size>6){
                         if((intent.getByteArrayExtra("data")[intent.getByteArrayExtra("data").size-1]).toInt()==10) {
@@ -112,6 +124,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 AppConstant.ACTION_CHARACTERISTIC_WRITE -> {
+                    tv_write.alpha = 1f
                 }
             }
         }
