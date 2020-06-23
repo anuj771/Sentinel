@@ -2,6 +2,7 @@ package com.sentinel.activity
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -96,7 +97,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, DatePickerDialog
             }
 
             R.id.tv_test -> {
-
+                val intentTest = Intent(this@MainActivity, TestActivity::class.java)
+                intentTest.putExtra("RTC", tv_date.text.toString().trim())
+                startActivity(intentTest)
             }
         }
     }

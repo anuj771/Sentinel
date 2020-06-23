@@ -80,6 +80,52 @@ object BleCharacteristic {
         return binArray.reversedArray()
     }
 
+    fun writeDataToDevice(context: Context, command:Int, address:String, data:String) {
+        val to_send = ByteArrayOutputStream()
+        try {
+            to_send.write(command)
+            if(data.equals("")){
+                to_send.write(AppConstant.hexStringToByteArray(address))
+            }else{
+                to_send.write(AppConstant.hexStringToByteArray(address+data))
+            }
+            to_send.write(calculateCRC32(to_send.toByteArray()))
+            to_send.write(0x0a)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        val binArray = to_send.toByteArray()
+
+        if (binArray == null || binArray.size == 0) {
+            return
+        }
+        var count = 0
+        var DataArray = ByteArray(MAX_TRANS_COUNT)
+        if (binArray.size < MAX_TRANS_COUNT) {
+            DataArray = ByteArray(binArray.size)
+        }
+        var i: Int
+        i = 0
+        while (i < binArray.size) {
+            DataArray[count] = binArray[i]
+            count += 1
+            if (count == MAX_TRANS_COUNT) {
+                bleWriteCharacteristic(DataArray)
+                count = 0
+                if (binArray.size - (i + 1) < MAX_TRANS_COUNT) {
+                    DataArray = ByteArray(binArray.size - (i + 1))
+                }
+            } else {
+                if (i == binArray.size - 1) {
+                    bleWriteCharacteristic(DataArray)
+                    count = 0
+                }
+            }
+            i++
+        }
+    }
+
 
 /*    fun sendPacket(context: Context, chalangedataencrpted: ByteArray): ByteArray? {
         val mBluetoothGatt = BleDeviceActor.getmBluetoothGatt()

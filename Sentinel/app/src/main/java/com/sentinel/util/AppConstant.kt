@@ -29,6 +29,7 @@ object AppConstant {
         filter.addAction(ACTION_DEVICE_CONNECTED)
         filter.addAction(ACTION_DEVICE_DISCONNECTED)
         filter.addAction(ACTION_CHARACTERISTIC_WRITE)
+        filter.addAction(ACTION_CHARACTERISTIC_CHANGED)
         return filter
     }
 
