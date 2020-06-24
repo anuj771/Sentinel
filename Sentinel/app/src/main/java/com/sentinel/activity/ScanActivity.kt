@@ -159,6 +159,7 @@ class ScanActivity : AppCompatActivity() {
                     intent1.putExtra("device_name", devicename)
                     intent1.putExtra("mac_address", macAddress)
                     context.startActivity(intent1)
+                    finish()
                 }
 
                 AppConstant.ACTION_DEVICE_DISCONNECTED -> {

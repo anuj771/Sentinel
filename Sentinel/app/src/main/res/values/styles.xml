@@ -8,4 +8,5 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="dilogTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
 </resources>

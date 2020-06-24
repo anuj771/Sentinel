@@ -24,7 +24,7 @@
 
     <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="47dp"
             android:layout_marginLeft="@dimen/main_activity_margin"
             android:layout_marginTop="8dp"
             android:background="@drawable/rect_grey"
@@ -33,9 +33,11 @@
         <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:textSize="16sp"
+                android:gravity="center_vertical"
                 android:text="22-06-2020 13:00:00"
                 android:textColor="@color/grey_dark_text"
                 android:fontFamily="@font/poppins_semi_bold"/>
@@ -62,8 +64,10 @@
     <EditText
             android:id="@+id/et_setOfDuration"
             android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
+            android:layout_height="47dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:gravity="center_vertical"
             android:layout_marginLeft="@dimen/main_activity_margin"
             android:layout_marginTop="8dp"
             android:textSize="16sp"
@@ -106,7 +110,7 @@
                 android:textSize="18sp"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:textColor="@color/white"
-                android:text="@string/manual"
+                android:text="@string/manual_c"
                 android:background="@drawable/rect_app_color"
                 android:gravity="center"/>
         <View
@@ -121,7 +125,7 @@
                 android:textSize="18sp"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:textColor="@color/white"
-                android:text="@string/test"
+                android:text="@string/test_c"
                 android:background="@drawable/rect_orange"
                 android:gravity="center"/>
     </LinearLayout>

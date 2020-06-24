@@ -198,7 +198,7 @@ class BleDeviceActor(mContext: Context) : Runnable {
             if (characteristic != null) {
                 characteristic.value = byteValue
                 val isWrite = mBluetoothGatt.writeCharacteristic(characteristic)
-//                BleDeviceActor.WaitForSync()
+                BleDeviceActor.WaitForSync()
                 Log.d("ble==>", "write characteristic: " + isWrite + " " + Arrays.toString(byteValue)+" hex: "+AppConstant.byteArrytoHex(byteValue))
                 broadcastUpdate(AppConstant.ACTION_CHARACTERISTIC_WRITE, byteValue)
             } else {
@@ -209,7 +209,7 @@ class BleDeviceActor(mContext: Context) : Runnable {
 
         private fun WaitForSync() {
             try {
-                Thread.sleep(550)
+                Thread.sleep(400)
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             }

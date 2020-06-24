@@ -39,7 +39,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
         registerReceiver(mGattUpdateReceiver, AppConstant.makeIntentFilter())
     }
 
-    fun initUI() {
+    private fun initUI() {
         iv_back = findViewById(R.id.iv_back)
         tv_title = findViewById(R.id.tv_title)
         tv_rtc = findViewById(R.id.tv_rtc)
@@ -89,7 +89,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                 if(address.equals("")){
                     Toast.makeText(this, resources.getString(R.string.enter_address_write), Toast.LENGTH_SHORT).show()
                 }else if(data.equals("")){
-                    Toast.makeText(this, resources.getString(R.string.enter_address_write), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, resources.getString(R.string.enter_data_write), Toast.LENGTH_SHORT).show()
                 }else{
                     if(address.length%2 == 0 && data.length%2 == 0) {
                         tv_write.alpha = 0.5f
@@ -120,17 +120,20 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                             data = Arrays.copyOfRange(data, 1, data.size - 5)
                             tv_read_response.text = resources.getString(R.string.read_response)+" "+AppConstant.byteArrytoHex(data)
                         }
+                    }else if(data.size==2 && data[0].toInt()==0){
+                        tv_write.alpha = 1f
+                        Toast.makeText(this@TestActivity, resources.getString(R.string.success), Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 AppConstant.ACTION_CHARACTERISTIC_WRITE -> {
-                    tv_write.alpha = 1f
+
                 }
             }
         }
     }
 
-    fun destroyAction(){
+   private fun destroyAction(){
         try {
             unregisterReceiver(mGattUpdateReceiver)
         } catch (e: Exception) {

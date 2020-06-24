@@ -16,7 +16,7 @@ import com.sentinel.util.CheckSelfPermission
 import java.util.zip.CRC32
 
 object BleCharacteristic {
-    var MAX_TRANS_COUNT = 20
+    var MAX_TRANS_COUNT = 19
 
     fun writeDataToDevice(context: Context, command:ByteArray, address:ByteArray) {
         val to_send = ByteArrayOutputStream()
@@ -81,6 +81,10 @@ object BleCharacteristic {
     }
 
     fun writeDataToDevice(context: Context, command:Int, address:String, data:String) {
+        val mBluetoothGatt = BleDeviceActor.getmBluetoothGatt()
+        if (!canReadWrite(context, mBluetoothGatt)) {
+            return
+        }
         val to_send = ByteArrayOutputStream()
         try {
             to_send.write(command)
@@ -180,6 +184,7 @@ object BleCharacteristic {
             Toast.makeText(context, context.getString(com.sentinel.R.string.device_disconnected), Toast.LENGTH_SHORT).show()
             return false
         } else return if (mBluetoothGatt == null) {
+            Toast.makeText(context, context.getString(com.sentinel.R.string.device_disconnected), Toast.LENGTH_SHORT).show()
             false
         } else {
             true
