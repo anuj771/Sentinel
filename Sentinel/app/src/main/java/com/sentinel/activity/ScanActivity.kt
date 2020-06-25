@@ -1,5 +1,6 @@
 package com.sentinel.activity
 
+import android.Manifest
 import android.app.ProgressDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
@@ -35,6 +36,7 @@ class ScanActivity : AppCompatActivity() {
     internal var devicename = ""
     internal var macAddress = ""
     private var pDialog: ProgressDialog? = null
+    private var isFirstPermission: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +47,11 @@ class ScanActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        chechSelfPermission()
+        if(isFirstPermission){
+            chechSelfPermission()
+        }else{
+            chechSelfPermissionRetional()
+        }
         scanModellists.clear()
         deviceListAdapter.notifyDataSetChanged()
 
@@ -76,7 +82,24 @@ class ScanActivity : AppCompatActivity() {
         deviceListAdapter = ScanListAdapter(this@ScanActivity, scanModellists)
         rv_scan_list.adapter = deviceListAdapter
         tv_scan.setOnClickListener {
-            chechSelfPermission()
+            chechSelfPermissionRetional()
+        }
+    }
+
+    private fun chechSelfPermissionRetional() {
+        if (CheckSelfPermission.checkLocationPermissionRetional(this@ScanActivity)) {
+            if (CheckSelfPermission.isBluetoothOn(this@ScanActivity)) {
+                if (CheckSelfPermission.isLocationOn(this@ScanActivity)) {
+                    try {
+                        scanModellists.clear()
+                        deviceListAdapter.notifyDataSetChanged()
+                        startScan()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+
+                }
+            }
         }
     }
 
@@ -95,6 +118,7 @@ class ScanActivity : AppCompatActivity() {
                 }
             }
         }
+        isFirstPermission = false;
     }
 
     private fun startScan() {
@@ -106,10 +130,10 @@ class ScanActivity : AppCompatActivity() {
             scanSettingsBuilder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
 
             val filters = ArrayList<ScanFilter>()
-           /* val filter = ScanFilter.Builder()
-                .setServiceUuid(ParcelUuid(UUID.fromString(AppConstant.service_uuid)))
-                .build()
-            filters.add(filter)*/
+            /* val filter = ScanFilter.Builder()
+                 .setServiceUuid(ParcelUuid(UUID.fromString(AppConstant.service_uuid)))
+                 .build()
+             filters.add(filter)*/
             stopScan()
             if (btScanner != null) {
                 btScanner!!.startScan(filters, scanSettingsBuilder.build(), ScanCallback)
@@ -119,7 +143,7 @@ class ScanActivity : AppCompatActivity() {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private fun stopScan() {
-        if (btAdapter!=null && btAdapter!!.isEnabled) {
+        if (btAdapter != null && btAdapter!!.isEnabled) {
             if (btScanner != null)
                 btScanner!!.stopScan(ScanCallback)
         }
@@ -141,7 +165,7 @@ class ScanActivity : AppCompatActivity() {
                             )
                         )
                     } else {
-                        scanModellists.add(ScanListModel("N/A", scannedDevice.address, false,  scannedDevice))
+                        scanModellists.add(ScanListModel("N/A", scannedDevice.address, false, scannedDevice))
                     }
                     deviceListAdapter.notifyDataSetChanged()
                 }
@@ -190,33 +214,56 @@ class ScanActivity : AppCompatActivity() {
 
     private fun hideProgressDialog() {
         try {
-            if (pDialog!=null && pDialog!!.isShowing) {
+            if (pDialog != null && pDialog!!.isShowing) {
                 pDialog!!.dismiss()
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-
- /*    private var timer: Timer? = null
-  private fun setTimer30Sec() {
-        timer50Sec = Timer()
-        val hourlyTask = object : TimerTask() {
-            override fun run() {
-                runOnUiThread { stopTimerScan() }
-            }
-        }
-        timer50Sec!!.schedule(hourlyTask, 50000, 50000)
+/*
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        chechSelfPermissionRetional()
     }
 
-    private fun stopTimerScan() {
-        try {
-            if (timer50Sec != null) {
-                timer50Sec!!.cancel()
-                timer50Sec = null
-            }
-        } catch (e: Exception) {
-        }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (CheckSelfPermission.isLocationOn(this@ScanActivity)) {
+            if (CheckSelfPermission.isBluetoothOn(this@ScanActivity)) {
+                try {
+                    scanModellists.clear()
+                    deviceListAdapter.notifyDataSetChanged()
+                    startScan()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
 
+            }
+        }
     }*/
+
+
+    /*    private var timer: Timer? = null
+     private fun setTimer30Sec() {
+           timer50Sec = Timer()
+           val hourlyTask = object : TimerTask() {
+               override fun run() {
+                   runOnUiThread { stopTimerScan() }
+               }
+           }
+           timer50Sec!!.schedule(hourlyTask, 50000, 50000)
+       }
+
+       private fun stopTimerScan() {
+           try {
+               if (timer50Sec != null) {
+                   timer50Sec!!.cancel()
+                   timer50Sec = null
+               }
+           } catch (e: Exception) {
+           }
+
+       }*/
 }
+

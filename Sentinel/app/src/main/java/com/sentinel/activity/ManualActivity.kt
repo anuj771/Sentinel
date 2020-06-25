@@ -47,7 +47,7 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-   
+
     private fun opneNumberPickPopup(view: View) {
         val popupMenu = PopupMenu(this, view)
         popupMenu.menu.add("1")

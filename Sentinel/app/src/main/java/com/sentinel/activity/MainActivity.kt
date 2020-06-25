@@ -1,26 +1,23 @@
 package com.sentinel.activity
 
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.widget.*
 import java.util.*
 import android.app.Dialog
 import android.graphics.Color
-import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.view.*
 
 import com.sentinel.R.*
-import android.view.WindowManager
-import com.sentinel.R
+import com.ikovac.timepickerwithseconds.MyTimePickerDialog
 import com.sentinel.ble.BleDeviceActor
 
-class MainActivity : AppCompatActivity(), View.OnClickListener, DatePickerDialog.OnDateSetListener,
-    TimePickerDialog.OnTimeSetListener {
+
+
+class MainActivity : AppCompatActivity(), View.OnClickListener, DatePickerDialog.OnDateSetListener{
     internal lateinit var iv_back: ImageView
     internal lateinit var iv_calender: ImageView
     internal lateinit var tv_title: TextView
@@ -36,7 +33,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, DatePickerDialog
     var year: Int = 0
     var hour: Int = 0
     var minute: Int = 0
-    lateinit var timePickerDialog: TimePickerDialog
+    var second: Int = 0
+    lateinit var timePickerDialog: MyTimePickerDialog
     lateinit var datePickerDialog: DatePickerDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +76,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, DatePickerDialog
         year = calendar.get(Calendar.YEAR)
         hour = calendar.get(Calendar.HOUR)
         minute = calendar.get(Calendar.MINUTE)
+        second = calendar.get(Calendar.SECOND)
         setDateText();
     }
 
@@ -125,33 +124,42 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, DatePickerDialog
         if (datePickerDialog != null && datePickerDialog.isShowing) {
             datePickerDialog.dismiss()
         }
-        timePickerDialog = TimePickerDialog(
-            this@MainActivity, this@MainActivity, hour, minute,
-            DateFormat.is24HourFormat(this)
-        )
-        timePickerDialog.show()
-        timePickerDialog.setCancelable(false)
+        setDateText();
+        openTimePicker()
     }
 
-    override fun onTimeSet(p0: TimePicker?, hourOfDay: Int, minute: Int) {
-        this.hour = hourOfDay
-        this.minute = minute
-        setDateText();
-        if (timePickerDialog != null && timePickerDialog.isShowing) {
-            timePickerDialog.dismiss()
-        }
+    private fun openTimePicker(){
+        timePickerDialog = MyTimePickerDialog(this, object : MyTimePickerDialog.OnTimeSetListener {
+            override fun onTimeSet(
+                view: com.ikovac.timepickerwithseconds.TimePicker?,
+                hourOfDay: Int,
+                minutePiced: Int,
+                secondsPiced: Int
+            ) {
+                hour = hourOfDay
+                minute = minutePiced
+                second = secondsPiced
+                setDateText();
+                if (datePickerDialog != null && datePickerDialog.isShowing) {
+                    datePickerDialog.dismiss()
+                }
+                if (timePickerDialog != null && timePickerDialog.isShowing) {
+                    timePickerDialog.dismiss()
+                }
+            }
+        },hour, minute,second, true)
+        timePickerDialog.show()
+        timePickerDialog.setCanceledOnTouchOutside(false)
     }
 
     private fun setDateText() {
         tv_date.text = String.format("%02d", day) + "-" + String.format("%02d", (month + 1)) +
-                "-" + String.format("%02d", year) + " " + String.format("%02d", hour) + ":" + String.format(
-            "%02d",
-            minute
-        )
+                "-" + String.format("%02d", year) + " " + String.format("%02d", hour) + ":" +
+                String.format("%02d", minute)+ ":" + String.format("%02d", second)
     }
 
     private fun openSendConfimDialog(){
-        val dialog = Dialog(this, R.style.dilogTheme)
+        val dialog = Dialog(this, com.sentinel.R.style.dilogTheme)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setContentView(layout.dialog_send_confirm)

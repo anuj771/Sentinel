@@ -22,6 +22,7 @@
                 android:textColor="@color/grey_dark_text"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:layout_margin="@dimen/main_activity_margin"
+                android:layout_centerVertical="true"
                 android:text="@string/fan"/>
 
         <ToggleButton

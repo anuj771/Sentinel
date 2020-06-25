@@ -15,6 +15,7 @@ import android.os.Build
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import com.sentinel.R
 
 object CheckSelfPermission {
@@ -35,21 +36,36 @@ object CheckSelfPermission {
         return true
     }
 
-    fun checkPhoneStatePermission(context: Context): Boolean {
+    fun checkLocationPermissionRetional(context: Context): Boolean {
+        try {
+            if (permissiondiaog != null) {
+                if (permissiondiaog!!.isShowing) {
+                    permissiondiaog!!.dismiss()
+                }
+            }
+        } catch (e: Exception) {
+        }
+
         if (ContextCompat.checkSelfPermission(
                 context,
-                Manifest.permission.READ_PHONE_STATE
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            if (!shouldShowRequestPermissionRationale(context as Activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ShowPermissionAlert(context, context.getString(R.string.enable_location_permission))
+                return false
+            }
             ActivityCompat.requestPermissions(
                 context as Activity,
-                arrayOf(Manifest.permission.READ_PHONE_STATE),
-                AppConstant.REQUEST_PHONE_STATE_PERMISSION
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                AppConstant.REQUEST_LOCATION_PERMISSION
             )
             return false
         }
         return true
     }
+
+
 
     fun isLocationOn(context: Context): Boolean {
         val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -62,16 +78,16 @@ object CheckSelfPermission {
 
         if (!gps_enabled) {
             AlertDialog.Builder(context)
-                .setMessage(R.string.enable_location_setting)
+                .setMessage(com.sentinel.R.string.enable_location_setting)
                 .setPositiveButton(
-                    R.string.ok,
+                    com.sentinel.R.string.ok,
                     DialogInterface.OnClickListener { paramDialogInterface, paramInt ->
                         (context as Activity).startActivityForResult(
                             Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),
                             AppConstant.REQUEST_ENABLE_LOCATION
                         )
                     })
-                .setNegativeButton(R.string.cancel, null)
+                .setNegativeButton(com.sentinel.R.string.cancel, null)
                 .setCancelable(false)
                 .show()
 
@@ -110,11 +126,10 @@ object CheckSelfPermission {
         }
 
         permissiondiaog = AlertDialog.Builder(context)
-            .setTitle(context.resources.getString(R.string.app_name))
+            .setTitle(context.resources.getString(com.sentinel.R.string.app_name))
             .setMessage(msg)
             .setCancelable(false)
             .setPositiveButton("ok") { dialog, whichButton ->
-                permissiondiaog!!.dismiss()
                 openPermissionsSettings(context.packageName, context)
             }.show()
     }
@@ -138,8 +153,5 @@ object CheckSelfPermission {
             }
         } catch (e: Exception) {
         }
-
     }
-
-
 }

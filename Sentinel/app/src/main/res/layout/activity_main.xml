@@ -80,7 +80,7 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/main_activity_margin"
             android:layout_marginRight="@dimen/main_activity_margin"
             android:layout_marginTop="70dp"
@@ -90,42 +90,48 @@
         <TextView
                 android:id="@+id/tv_send"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:textSize="18sp"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:textColor="@color/white"
                 android:text="@string/send"
+                android:elevation="6dp"
+                android:padding="8dp"
                 android:background="@drawable/rect_blue"
                 android:gravity="center"/>
         <View
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.2"/>
         <TextView
                 android:id="@+id/tv_manual"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:textColor="@color/white"
                 android:text="@string/manual_c"
+                android:elevation="6dp"
+                android:padding="8dp"
                 android:background="@drawable/rect_app_color"
                 android:gravity="center"/>
         <View
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.2"/>
         <TextView
                 android:id="@+id/tv_test"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:textSize="18sp"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:textColor="@color/white"
                 android:text="@string/test_c"
+                android:elevation="6dp"
+                android:padding="8dp"
                 android:background="@drawable/rect_orange"
                 android:gravity="center"/>
     </LinearLayout>

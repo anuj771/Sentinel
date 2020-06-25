@@ -83,6 +83,7 @@
                 android:background="@drawable/rect_blue"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
+                android:elevation="6dp"
                 android:gravity="center"/>
         <TextView
                 android:id="@+id/tv_read_response"
@@ -155,6 +156,11 @@
                 android:text="@string/write"
                 android:background="@drawable/rect_blue"
                 android:layout_marginTop="10dp"
+                android:elevation="6dp"
                 android:gravity="center"/>
+
+        <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"/>
     </LinearLayout>
 </RelativeLayout>

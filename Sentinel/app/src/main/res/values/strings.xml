@@ -27,6 +27,7 @@
 
 
     <string name="connecting">Connecting...</string>
+    <string name="enable_location_permission">Please enable location permission for scan neearby devices from App permissions</string>
     <string name="address">Address</string>
     <string name="data">Data</string>
     <string name="read_response">Read Response :</string>

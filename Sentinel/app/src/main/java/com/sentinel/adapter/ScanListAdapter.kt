@@ -39,7 +39,7 @@ class ScanListAdapter
         holder.tv_deviceName.setText(scanModellist.Devicename)
         holder.tv_macAddress.setText(scanModellist.deviceMacAddress)
         holder.tv_connect.setOnClickListener {
-            if (CheckSelfPermission.checkLocationPermission(context)) {
+            if (CheckSelfPermission.checkLocationPermissionRetional(context)) {
                 if (CheckSelfPermission.isBluetoothOn(context)) {
                     if (CheckSelfPermission.isLocationOn(context)) {
                         if (context is ScanActivity) {

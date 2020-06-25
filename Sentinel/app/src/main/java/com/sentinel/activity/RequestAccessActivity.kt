@@ -21,7 +21,6 @@ import java.util.*
 import com.sentinel.ble.BleDeviceActor
 import com.sentinel.util.AppConstant
 import com.sentinel.util.CheckSelfPermission
-import com.sentinel.util.CheckSelfPermission.checkPhoneStatePermission
 
 class RequestAccessActivity : AppCompatActivity(), View.OnClickListener {
     private var tv_text: TextView? = null
