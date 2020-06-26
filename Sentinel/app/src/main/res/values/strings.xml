@@ -24,6 +24,8 @@
     <string name="go_to_position">Go To Position</string>
     <string name="confirm">CONFIRM</string>
     <string name="date">Date</string>
+    <string name="erase">ERASE</string>
+    <string name="reset">RESET</string>
 
 
     <string name="connecting">Connecting...</string>
@@ -33,7 +35,16 @@
     <string name="read_response">Read Response :</string>
     <string name="enter_address_write">Enter address for write</string>
     <string name="enter_address_read">Enter address for read</string>
+    <string name="enter_address_erase">Enter address for erase</string>
     <string name="enter_data_write">Enter data for write</string>
     <string name="enter_valid_data">Enter valid hax data</string>
-    <string name="success">Success</string>
+    <string name="enter_set_of_duration">Enter Set of duration</string>
+    <string name="set_of_duration_validation">Set of duration should be under 256</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="device_response">Device Response</string>
+    <string name="response_success">Success</string>
+    <string name="response_parse_error">Parsing Error</string>
+    <string name="response_unkonwn_error">Unknown Error</string>
+    <string name="response_illegel_range_error">Illegal Range Error</string>
+    <string name="response_crc_mismatch_error">CRC Mismatch Error</string>
 </resources>

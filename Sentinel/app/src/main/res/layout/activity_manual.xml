@@ -15,16 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="@color/grey_dark_text"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:layout_margin="@dimen/main_activity_margin"
-                android:layout_centerVertical="true"
-                android:text="@string/fan"/>
-
         <ToggleButton
                 android:id="@+id/toggle_fan"
                 android:layout_width="60dp"
@@ -33,9 +23,21 @@
                 android:layout_alignParentRight="true"
                 android:textOn=""
                 android:textOff=""
-                android:layout_marginRight="@dimen/main_activity_margin"
+                android:layout_margin="20dp"
                 android:checked="false"
                 android:layout_centerVertical="true"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/grey_dark_text"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                android:paddingTop="5dp"
+                android:text="@string/fan"/>
+
     </RelativeLayout>
 
     <View
@@ -82,8 +84,17 @@
                 android:background="@drawable/rect_app_color"/>
     </LinearLayout>
 
-    <ImageView
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/clock_circle"/>
+            android:layout_margin="50dp">
+        <ImageView
+                android:id="@+id/iv_wheel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/wheel7"/>
+    </LinearLayout>
+
+
 </LinearLayout>

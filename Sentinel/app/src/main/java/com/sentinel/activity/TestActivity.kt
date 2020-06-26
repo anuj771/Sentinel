@@ -13,11 +13,6 @@ import android.widget.Toast
 import com.sentinel.R
 import com.sentinel.ble.BleCharacteristic
 import com.sentinel.util.AppConstant
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_request_access.*
-import kotlinx.android.synthetic.main.activity_test.*
-import kotlinx.android.synthetic.main.activity_test.view.*
-import kotlinx.android.synthetic.main.layout_header.*
 import java.util.*
 
 class TestActivity : AppCompatActivity(), View.OnClickListener {
@@ -26,6 +21,8 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
     internal lateinit var tv_rtc: TextView
     internal lateinit var tv_read: TextView
     internal lateinit var tv_write: TextView
+    internal lateinit var tv_erase: TextView
+    internal lateinit var tv_reset: TextView
     internal lateinit var tv_read_response: TextView
     internal lateinit var et_read_address: EditText
     internal lateinit var et_write_address: EditText
@@ -45,6 +42,8 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
         tv_rtc = findViewById(R.id.tv_rtc)
         tv_read = findViewById(R.id.tv_read)
         tv_write = findViewById(R.id.tv_write)
+        tv_erase = findViewById(R.id.tv_erase)
+        tv_reset = findViewById(R.id.tv_reset)
         et_read_address = findViewById(R.id.et_read_address)
         tv_read_response = findViewById(R.id.tv_read_response)
         et_write_address = findViewById(R.id.et_write_address)
@@ -53,6 +52,8 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
         iv_back.setOnClickListener(this)
         tv_read.setOnClickListener(this)
         tv_write.setOnClickListener(this)
+        tv_erase.setOnClickListener(this)
+        tv_reset.setOnClickListener(this)
 
         iv_back.visibility = View.VISIBLE
         tv_title.text = resources.getString(R.string.test)
@@ -75,8 +76,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(this, resources.getString(R.string.enter_address_read), Toast.LENGTH_SHORT).show()
                 }else{
                     if(address.length%2 == 0) {
-                        tv_read.alpha = 0.5f
-                        BleCharacteristic.writeDataToDevice(this, 0, address, "")
+                        BleCharacteristic.writeDataToDevice(this, AppConstant.READ_COMMAND, address, "")
                     }else{
                         Toast.makeText(this, resources.getString(R.string.enter_valid_data), Toast.LENGTH_SHORT).show()
                     }
@@ -92,12 +92,28 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(this, resources.getString(R.string.enter_data_write), Toast.LENGTH_SHORT).show()
                 }else{
                     if(address.length%2 == 0 && data.length%2 == 0) {
-                        tv_write.alpha = 0.5f
-                        BleCharacteristic.writeDataToDevice(this, 1, address, data)
+                        BleCharacteristic.writeDataToDevice(this, AppConstant.WRITE_COMMAND, address, data)
                     }else{
                         Toast.makeText(this, resources.getString(R.string.enter_valid_data), Toast.LENGTH_SHORT).show()
                     }
                 }
+            }
+
+            R.id.tv_erase -> {
+                val address: String = et_read_address.text.toString().trim()
+                if(address.equals("")){
+                    Toast.makeText(this, resources.getString(R.string.enter_address_erase), Toast.LENGTH_SHORT).show()
+                }else{
+                    if(address.length%2 == 0) {
+                        BleCharacteristic.writeDataToDevice(this, AppConstant.ERASE_COMMAND, address, "")
+                    }else{
+                        Toast.makeText(this, resources.getString(R.string.enter_valid_data), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            R.id.tv_reset -> {
+                BleCharacteristic.writeDeviceReset(this@TestActivity)
             }
         }
     }
@@ -106,28 +122,19 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
         override fun onReceive(context: Context, intent: Intent) {
             val action = intent.action
             when (action) {
-                AppConstant.ACTION_DEVICE_CONNECTED -> {
-                }
-
                 AppConstant.ACTION_DEVICE_DISCONNECTED -> {
                 }
 
                 AppConstant.ACTION_CHARACTERISTIC_CHANGED -> {
-                    tv_read.alpha = 1f
+                    AppConstant.dismissProgrssDialog()
                     var data:ByteArray = intent.getByteArrayExtra("data")
-                    if ((intent.getByteArrayExtra("data")[0]).toInt()==0 && data.size>6){
-                        if((intent.getByteArrayExtra("data")[intent.getByteArrayExtra("data").size-1]).toInt()==10) {
-                            data = Arrays.copyOfRange(data, 1, data.size - 5)
-                            tv_read_response.text = resources.getString(R.string.read_response)+" "+AppConstant.byteArrytoHex(data)
-                        }
-                    }else if(data.size==2 && data[0].toInt()==0){
-                        tv_write.alpha = 1f
-                        Toast.makeText(this@TestActivity, resources.getString(R.string.success), Toast.LENGTH_SHORT).show()
+                    if (data.size==2){
+                        AppConstant.ShowResponseDialog(this@TestActivity,data)
+                    }else if(data.size>6 && data[data.size-1].toInt()==10){
+                        AppConstant.ShowResponseDialog(this@TestActivity,data)
+                        data = Arrays.copyOfRange(data, 1, data.size - 5)
+                        tv_read_response.text = resources.getString(R.string.read_response)+" "+AppConstant.byteArrytoHex(data)
                     }
-                }
-
-                AppConstant.ACTION_CHARACTERISTIC_WRITE -> {
-
                 }
             }
         }

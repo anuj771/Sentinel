@@ -85,6 +85,7 @@ object BleCharacteristic {
         if (!canReadWrite(context, mBluetoothGatt)) {
             return
         }
+        AppConstant.openProgressDialog(context)
         val to_send = ByteArrayOutputStream()
         try {
             to_send.write(command)
@@ -130,33 +131,13 @@ object BleCharacteristic {
         }
     }
 
-
-/*    fun sendPacket(context: Context, chalangedataencrpted: ByteArray): ByteArray? {
+    fun writeDeviceReset(context: Context){
         val mBluetoothGatt = BleDeviceActor.getmBluetoothGatt()
-        if (canReadWrite(context, mBluetoothGatt)) {
-            val deviceID = SharedPref.getValue(context, SharedPref.PREF_DEVICE_ID, "")
-            Log.d("ble==> ", "deviceID imei: $deviceID")
-            val deviceIdData = AppConstant.convertStringToByte(deviceID.toUpperCase())
-            val to_send = ByteArrayOutputStream()
-            try {
-                to_send.write(chalangedataencrpted)
-                to_send.write(deviceIdData)
-                to_send.write(0x7d)
-                to_send.write(0x0a)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-            return to_send.toByteArray()
-        } else {
-            val intent = Intent(AppConstant.ACTION_DEVICE_DISCONNECTED)
-            context.sendBroadcast(intent)
-            return null
+        if (!canReadWrite(context, mBluetoothGatt)) {
+            return
         }
-    }*/
-
-    fun removefirstvaluefromByte(chalangeData: ByteArray): ByteArray {
-        return Arrays.copyOfRange(chalangeData, 1, chalangeData.size)
+        val DataArray = byteArrayOf(0x0a, 0x0a)
+        bleWriteCharacteristic(DataArray)
     }
 
     fun enableNotifyChar(context: Context) {
@@ -189,5 +170,9 @@ object BleCharacteristic {
         } else {
             true
         }
+    }
+
+    fun removefirstvaluefromByte(chalangeData: ByteArray): ByteArray {
+        return Arrays.copyOfRange(chalangeData, 1, chalangeData.size)
     }
 }

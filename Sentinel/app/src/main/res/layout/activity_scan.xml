@@ -33,5 +33,6 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/layout_header"
             android:layout_above="@+id/tv_scan"
+            android:layout_marginBottom="20dp"
             tools:listitem="@layout/adapter_scan_list"></androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>

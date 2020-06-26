@@ -10,7 +10,8 @@
         android:focusableInTouchMode="true"
         tools:context=".activity.TestActivity">
 
-    <include layout="@layout/layout_header"
+    <include
+            layout="@layout/layout_header"
             android:id="@+id/ll_header"/>
 
     <LinearLayout
@@ -21,6 +22,7 @@
             android:layout_below="@+id/ll_header"
             android:padding="@dimen/main_activity_margin"
             android:background="@color/white">
+
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,6 +30,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:textSize="12sp"
                 android:textColor="@color/grey_light_text"/>
+
         <TextView
                 android:id="@+id/tv_rtc"
                 android:layout_width="wrap_content"
@@ -37,6 +40,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/grey_dark_text"/>
     </LinearLayout>
+
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,21 +53,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@color/white"
-            android:padding="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:layout_alignParentBottom="true">
+
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/address"
                 android:fontFamily="@font/poppins_medium"
                 android:textColor="@color/grey_light_text"
+                android:layout_marginTop="10dp"
                 android:textSize="12sp"/>
 
         <EditText
                 android:id="@+id/et_read_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:textSize="16sp"
                 android:digits="0123456789ABCDEF"
                 android:inputType="textCapCharacters"
@@ -72,33 +79,56 @@
                 android:fontFamily="@font/poppins_semi_bold"
                 android:background="@drawable/rect_grey"/>
 
-        <TextView
-                android:id="@+id/tv_read"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:textColor="@color/white"
-                android:text="@string/read"
-                android:background="@drawable/rect_blue"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:elevation="6dp"
-                android:gravity="center"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/tv_read"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:textColor="@color/white"
+                    android:text="@string/read"
+                    android:background="@drawable/rect_blue"
+                    android:layout_marginTop="10dp"
+                    android:elevation="6dp"
+                    android:gravity="center"/>
+            <View
+                    android:layout_width="0dp"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.1"/>
+            <TextView
+                    android:id="@+id/tv_erase"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:textColor="@color/white"
+                    android:text="@string/erase"
+                    android:background="@drawable/rect_blue"
+                    android:layout_marginTop="10dp"
+                    android:elevation="6dp"
+                    android:gravity="center"/>
+
+        </LinearLayout>
+
         <TextView
                 android:id="@+id/tv_read_response"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text="@string/read_response"
-                android:layout_marginTop="6dp"
                 android:textColor="@color/grey_dark_text"
                 android:fontFamily="@font/poppins_medium"/>
 
         <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@color/grey_line"/>
 
         <TextView
@@ -107,14 +137,14 @@
                 android:text="@string/address"
                 android:fontFamily="@font/poppins_medium"
                 android:textColor="@color/grey_light_text"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:textSize="12sp"/>
 
         <EditText
                 android:id="@+id/et_write_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:textSize="16sp"
                 android:digits="0123456789ABCDEF"
                 android:inputType="textCapCharacters"
@@ -129,14 +159,14 @@
                 android:text="@string/data"
                 android:fontFamily="@font/poppins_medium"
                 android:textColor="@color/grey_light_text"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:textSize="12sp"/>
 
         <EditText
                 android:id="@+id/et_write_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:textSize="16sp"
                 android:digits="0123456789ABCDEF"
                 android:inputType="textCapCharacters"
@@ -148,8 +178,7 @@
         <TextView
                 android:id="@+id/tv_write"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:layout_height="40dp"
                 android:textSize="16sp"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:textColor="@color/white"
@@ -159,6 +188,23 @@
                 android:elevation="6dp"
                 android:gravity="center"/>
 
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/grey_line"/>
+        <TextView
+                android:id="@+id/tv_reset"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:textColor="@color/white"
+                android:text="@string/reset"
+                android:background="@drawable/rect_blue"
+                android:layout_marginTop="10dp"
+                android:elevation="6dp"
+                android:gravity="center"/>
         <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"/>

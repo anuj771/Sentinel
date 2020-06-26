@@ -164,10 +164,9 @@ class ScanActivity : AppCompatActivity() {
                                 scannedDevice
                             )
                         )
-                    } else {
-                        scanModellists.add(ScanListModel("N/A", scannedDevice.address, false, scannedDevice))
+                        deviceListAdapter.notifyDataSetChanged()
                     }
-                    deviceListAdapter.notifyDataSetChanged()
+
                 }
             }
         }
