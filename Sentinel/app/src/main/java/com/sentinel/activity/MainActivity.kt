@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, DatePickerDialog
         day = calendar.get(Calendar.DAY_OF_MONTH)
         month = calendar.get(Calendar.MONTH)
         year = calendar.get(Calendar.YEAR)
-        hour = calendar.get(Calendar.HOUR)
+        hour = calendar.get(Calendar.HOUR_OF_DAY)
         minute = calendar.get(Calendar.MINUTE)
         second = calendar.get(Calendar.SECOND)
         dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
