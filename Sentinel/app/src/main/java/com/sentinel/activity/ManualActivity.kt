@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import com.sentinel.CircularWheelView
 import com.sentinel.R
 import com.sentinel.ble.BleCharacteristic
 import com.sentinel.util.AppConstant
@@ -20,6 +22,7 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
     internal lateinit var iv_position_selector: ImageView
     internal lateinit var iv_wheel: ImageView
     internal lateinit var toggle_fan: ToggleButton
+    internal lateinit var circularWheelPicker: CircularWheelView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +43,7 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
         iv_position_selector = findViewById(com.sentinel.R.id.iv_position_selector)
         iv_wheel = findViewById(com.sentinel.R.id.iv_wheel)
         toggle_fan = findViewById(com.sentinel.R.id.toggle_fan)
+        circularWheelPicker = findViewById(com.sentinel.R.id.circularWheelPicker)
 
         iv_back.setOnClickListener(this)
         iv_position_selector.setOnClickListener(this)
@@ -47,6 +51,26 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
 
         iv_back.visibility = View.VISIBLE
         tv_title.text = resources.getString(com.sentinel.R.string.manual)
+
+        setWheelPicker();
+    }
+
+    private fun setWheelPicker() {
+        val list2 = ArrayList<String>()
+        for (i in 1 until 17 step 1) {
+            list2.add(i.toString())
+        }
+
+        circularWheelPicker.setDataSet(list2)
+        circularWheelPicker.setWheelItemSelectionListener(object : CircularWheelView.WheelItemSelectionListener {
+            override fun onItemSelected(index: Int) {
+                tv_position.text = String.format("%02d", index+1)
+                writeGoToPosition(index)
+//                Log.d("wheel==>", "Selected position is : $index")
+//                Log.d("wheel==>", "Get Current Item : ${circularWheelPicker.getCurrentItem()}")
+//                Log.d("wheel==>", "Get Current Position : ${circularWheelPicker.getCurrentPosition()}")
+            }
+        })
     }
 
     override fun onClick(p0: View?) {
@@ -84,7 +108,8 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
             override fun onMenuItemClick(item: MenuItem): Boolean {
                 val int1: Int = (item.toString()).toInt()
                 tv_position.text = String.format("%02d", int1)
-                setWheelIcon(int1)
+//                setWheelIcon(int1)
+                circularWheelPicker.setCurrentPosition(int1-1)
                 writeGoToPosition(int1)
                 return true
             }

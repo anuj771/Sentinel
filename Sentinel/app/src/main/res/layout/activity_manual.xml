@@ -70,7 +70,7 @@
                 android:layout_height="match_parent"
                 android:padding="12dp"
                 android:textSize="16sp"
-                android:text="07"
+                android:text="01"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/grey_dark_text"
                 android:fontFamily="@font/poppins_semi_bold"/>
@@ -81,18 +81,40 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/down_arrow"
                 android:padding="14dp"
+                android:visibility="gone"
                 android:background="@drawable/rect_app_color"/>
     </LinearLayout>
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_margin="50dp">
+            android:layout_marginLeft="25dp"
+            android:gravity="center">
         <ImageView
                 android:id="@+id/iv_wheel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:src="@drawable/wheel7"/>
+        <com.sentinel.CircularWheelView
+                android:id="@+id/circularWheelPicker"
+                android:layout_width="300dp"
+                android:layout_height="285dp"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.8"
+                app:wheel_position="right" />
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.04" />
     </LinearLayout>
 </LinearLayout>
