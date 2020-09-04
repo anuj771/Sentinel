@@ -23,6 +23,7 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
     internal lateinit var iv_wheel: ImageView
     internal lateinit var toggle_fan: ToggleButton
     internal lateinit var circularWheelPicker: CircularWheelView
+    var isFromPicker = false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,8 +65,11 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
         circularWheelPicker.setDataSet(list2)
         circularWheelPicker.setWheelItemSelectionListener(object : CircularWheelView.WheelItemSelectionListener {
             override fun onItemSelected(index: Int) {
-                tv_position.text = String.format("%02d", index+1)
-                writeGoToPosition(index)
+                if (!isFromPicker) {
+                    tv_position.text = String.format("%02d", index + 1)
+                    writeGoToPosition(index)
+                }
+                isFromPicker = false;
 //                Log.d("wheel==>", "Selected position is : $index")
 //                Log.d("wheel==>", "Get Current Item : ${circularWheelPicker.getCurrentItem()}")
 //                Log.d("wheel==>", "Get Current Position : ${circularWheelPicker.getCurrentPosition()}")
@@ -109,7 +113,8 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
                 val int1: Int = (item.toString()).toInt()
                 tv_position.text = String.format("%02d", int1)
 //                setWheelIcon(int1)
-                circularWheelPicker.setCurrentPosition(int1-1)
+                isFromPicker = true;
+                circularWheelPicker.setCurrentPosition(int1 - 1)
                 writeGoToPosition(int1)
                 return true
             }
@@ -117,7 +122,7 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
         popupMenu.show()
     }
 
-    private fun setWheelIcon(position:Int){
+    private fun setWheelIcon(position: Int) {
         when (position) {
             1 -> iv_wheel.setImageDrawable(resources.getDrawable(R.drawable.wheel1))
             2 -> iv_wheel.setImageDrawable(resources.getDrawable(R.drawable.wheel2))
@@ -135,7 +140,7 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
             14 -> iv_wheel.setImageDrawable(resources.getDrawable(R.drawable.wheel14))
             15 -> iv_wheel.setImageDrawable(resources.getDrawable(R.drawable.wheel15))
             16 -> iv_wheel.setImageDrawable(resources.getDrawable(R.drawable.wheel16))
-            }
+        }
     }
 
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
@@ -143,14 +148,14 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
     }
 
     private fun writeGoToPosition(position: Int) {
-        val address:String = ""+String.format("%02X", 0xFF and position)
+        val address: String = "" + String.format("%02X", 0xFF and position)
         BleCharacteristic.writeDataToDevice(this, AppConstant.GO_TO_POSITION_COMMAND, address, "")
     }
 
     private fun writeFan(isFan: Boolean) {
-        if (isFan){
+        if (isFan) {
             BleCharacteristic.writeDataToDevice(this, AppConstant.FAN_COMMAND, "01", "")
-        }else{
+        } else {
             BleCharacteristic.writeDataToDevice(this, AppConstant.FAN_COMMAND, "00", "")
         }
     }
@@ -165,16 +170,16 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
 
                 AppConstant.ACTION_CHARACTERISTIC_CHANGED -> {
                     AppConstant.dismissProgrssDialog()
-                    var data:ByteArray = intent.getByteArrayExtra("data")
-                    if (data.size==2){
-                        AppConstant.ShowResponseDialog(this@ManualActivity,data)
+                    var data: ByteArray = intent.getByteArrayExtra("data")
+                    if (data.size == 2) {
+                        AppConstant.ShowResponseDialog(this@ManualActivity, data)
                     }
                 }
             }
         }
     }
 
-    private fun destroyAction(){
+    private fun destroyAction() {
         try {
             unregisterReceiver(mGattUpdateReceiver)
         } catch (e: Exception) {
