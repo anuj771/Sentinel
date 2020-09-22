@@ -89,7 +89,8 @@ object BleCharacteristic {
         val to_send = ByteArrayOutputStream()
         try {
             to_send.write(command)
-            if(data.equals("")){
+            if(address.equals("")){
+            }else if(data.equals("")){
                 to_send.write(AppConstant.hexStringToByteArray(address))
             }else{
                 to_send.write(AppConstant.hexStringToByteArray(address+data))

@@ -24,6 +24,8 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
     internal lateinit var toggle_fan: ToggleButton
     internal lateinit var circularWheelPicker: CircularWheelView
     var isFromPicker = false;
+    var isReadPosition: Boolean = true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +56,7 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
         tv_title.text = resources.getString(com.sentinel.R.string.manual)
 
         setWheelPicker();
+        BleCharacteristic.writeDataToDevice(this, AppConstant.GET_POSITION_COMMAND, "", "")
     }
 
     private fun setWheelPicker() {
@@ -148,6 +151,7 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
     }
 
     private fun writeGoToPosition(position: Int) {
+        isReadPosition = false
         val address: String = "" + String.format("%02X", 0xFF and position)
         BleCharacteristic.writeDataToDevice(this, AppConstant.GO_TO_POSITION_COMMAND, address, "")
     }
@@ -171,7 +175,21 @@ class ManualActivity : AppCompatActivity(), View.OnClickListener, CompoundButton
                 AppConstant.ACTION_CHARACTERISTIC_CHANGED -> {
                     AppConstant.dismissProgrssDialog()
                     var data: ByteArray = intent.getByteArrayExtra("data")
-                    if (data.size == 2) {
+                    if (isReadPosition && data[0].toInt()==0 && data.size>=2){
+                        isReadPosition = false
+                        try {
+                            var position = data[1].toInt()
+                            tv_position.text = String.format("%02d", position)
+                            isFromPicker = true;
+                            circularWheelPicker.setCurrentPosition(position - 1)
+                        }catch (e:Exception){
+                            e.printStackTrace()
+                        }
+
+                    }else if (isReadPosition && data[0].toInt()!=0){
+                        isReadPosition = false
+                        AppConstant.ShowResponseDialog(this@ManualActivity,data)
+                    }else if (data.size == 2) {
                         AppConstant.ShowResponseDialog(this@ManualActivity, data)
                     }
                 }

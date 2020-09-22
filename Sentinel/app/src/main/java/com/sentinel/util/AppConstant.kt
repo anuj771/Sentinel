@@ -25,6 +25,7 @@ object AppConstant {
     val SET_DURATION_COMMAND = 5
     val FAN_COMMAND = 6
     val GO_TO_POSITION_COMMAND = 7
+    val GET_POSITION_COMMAND = 8
     val RESET_COMMAND = 0X0a
 
     val RESPONSE_SUCCESS = 0
